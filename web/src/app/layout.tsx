@@ -10,7 +10,6 @@ import { Hero } from "@/components/Hero";
 import { SignIn } from "@/components/SignIn";
 import { Profile } from "@/components/Profile";
 import { Copyright } from "@/components/Copyright";
-import { EmptyMemories } from "@/components/EmptyMemories";
 
 const roboto = Roboto({ subsets: ["latin"], variable: "--font-roboto" });
 const baiJamjuree = BaiJamjuree({
