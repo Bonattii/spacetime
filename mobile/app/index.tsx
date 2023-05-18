@@ -1,5 +1,9 @@
+import { useEffect } from "react";
 import { styled } from "nativewind";
+import { useRouter } from "expo-router";
 import { StatusBar } from "expo-status-bar";
+import * as SecureStore from "expo-secure-store";
+import { makeRedirectUri, useAuthRequest } from "expo-auth-session";
 import { ImageBackground, Text, TouchableOpacity, View } from "react-native";
 
 import {
@@ -9,18 +13,73 @@ import {
 } from "@expo-google-fonts/roboto";
 import { BaiJamjuree_700Bold } from "@expo-google-fonts/bai-jamjuree";
 
-import blurBg from "./src/assets/bg-blur.png";
-import Stripes from "./src/assets/stripes.svg";
-import NLWLogo from "./src/assets/nlw-spacetime-logo.svg";
+import { api } from "../src/lib/api";
 
+import blurBg from "../src/assets/bg-blur.png";
+import Stripes from "../src/assets/stripes.svg";
+import NLWLogo from "../src/assets/nlw-spacetime-logo.svg";
+
+// Transform the Stripes into a component that can be styled by native wind
 const StyledStripes = styled(Stripes);
 
+// Discovery configs fot github
+const discovery = {
+  authorizationEndpoint: "https://github.com/login/oauth/authorize",
+  tokenEndpoing: "https://github.com/login/oauth/access_token",
+  revocationEndpoint:
+    "https://github.com/settings/connections/applications/3e675bea39da0db109fd",
+};
+
 export default function App() {
+  const router = useRouter();
+
   const [hasFontsLoaded] = useFonts({
     Roboto_400Regular,
     Roboto_700Bold,
     BaiJamjuree_700Bold,
   });
+
+  // Config the useAuthRequest to use Github authentication
+  const [, response, signInWithGitHub] = useAuthRequest(
+    {
+      clientId: "3e675bea39da0db109fd",
+      scopes: ["identity"],
+      redirectUri: makeRedirectUri({
+        scheme: "spacetime",
+      }),
+    },
+    discovery
+  );
+
+  const handleGithubOAuthCode = async (code: string) => {
+    const response = await api.post("/register", {
+      code,
+    });
+
+    const { token } = response.data;
+
+    // Save the token on the secure store
+    await SecureStore.setItemAsync("token", token);
+
+    // Will redirect the user to the memories page
+    router.push("/memories");
+  };
+
+  useEffect(() => {
+    // console.log(
+    //   makeRedirectUri({
+    //     scheme: "spacetime",
+    //   })
+    // );
+
+    if (response?.type === "success") {
+      // get the code that the github sent on the request of login
+      const { code } = response.params;
+
+      // Call the api to get a jwt token and register the user
+      handleGithubOAuthCode(code);
+    }
+  }, [response]);
 
   if (!hasFontsLoaded) {
     return null;
@@ -59,6 +118,7 @@ export default function App() {
         <TouchableOpacity
           activeOpacity={0.7}
           className="rounded-full bg-green-500 px-5 py-2"
+          onPress={() => signInWithGitHub()}
         >
           <Text className="font-alt text-sm uppercase text-black">
             Register Memory
