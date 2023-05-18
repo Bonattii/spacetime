@@ -16,7 +16,7 @@ app.register(cors, {
 
 // Register jwt on the application
 app.register(jwt, {
-  secret: process.env.JWT_TOKEN as string
+  secret: process.env.JWT_SECRET as string
 });
 
 app.register(memoriesRoutes);
