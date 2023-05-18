@@ -1,5 +1,7 @@
 import { EmptyMemories } from "@/components/EmptyMemories";
 
-export default function Home() {
+const Home = () => {
   return <EmptyMemories />;
-}
+};
+
+export default Home;

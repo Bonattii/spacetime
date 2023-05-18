@@ -86,7 +86,7 @@ module.exports = {
       },
 
       fontSize: {
-        '5xl': '2.5rem'
+        "5xl": "2.5rem",
       },
 
       backgroundSize: {
@@ -98,5 +98,5 @@ module.exports = {
       },
     },
   },
-  plugins: [],
+  plugins: [require("@tailwindcss/forms")],
 };
