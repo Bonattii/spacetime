@@ -1,6 +1,8 @@
 import { styled } from "nativewind";
+import { useState, useEffect } from "react";
 import { StatusBar } from "expo-status-bar";
 import { ImageBackground } from "react-native";
+import * as SecureStore from "expo-secure-store";
 import { SplashScreen, Stack } from "expo-router";
 
 import {
@@ -17,11 +19,22 @@ import Stripes from "../src/assets/stripes.svg";
 const StyledStripes = styled(Stripes);
 
 const Layout = () => {
+  const [isUserAuthenticated, setIsUserAuthenticated] = useState<
+    null | boolean
+  >(null);
+
   const [hasFontsLoaded] = useFonts({
     Roboto_400Regular,
     Roboto_700Bold,
     BaiJamjuree_700Bold,
   });
+
+  useEffect(() => {
+    SecureStore.getItemAsync("token").then((token) => {
+      // Convert the token into a booleand and change the state
+      setIsUserAuthenticated(!!token);
+    });
+  }, []);
 
   // Show the splashScreen until the fonts are loaded
   if (!hasFontsLoaded) {
@@ -43,7 +56,11 @@ const Layout = () => {
           headerShown: false,
           contentStyle: { backgroundColor: "transparent" },
         }}
-      />
+      >
+        {/* If the user is authenticated will redirect to next route */}
+        <Stack.Screen name="index" redirect={isUserAuthenticated} />
+        <Stack.Screen name="memories" />
+      </Stack>
     </ImageBackground>
   );
 };
