@@ -1,3 +1,4 @@
+import Link from "next/link";
 import Image from "next/image";
 
 import nlwLogo from "../assets/nlw-spacetime-logo.svg";
@@ -18,8 +19,8 @@ export const Hero = () => {
         </p>
       </div>
 
-      <a
-        href=""
+      <Link
+        href="/memories/new"
         className="
               inline-block
               rounded-full
@@ -30,7 +31,7 @@ export const Hero = () => {
             "
       >
         REGISTER A MEMORY
-      </a>
+      </Link>
     </div>
   );
 };
