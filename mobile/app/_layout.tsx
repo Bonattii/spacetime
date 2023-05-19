@@ -59,6 +59,7 @@ const Layout = () => {
       >
         {/* If the user is authenticated will redirect to next route */}
         <Stack.Screen name="index" redirect={isUserAuthenticated} />
+        <Stack.Screen name="new" />
         <Stack.Screen name="memories" />
       </Stack>
     </ImageBackground>
