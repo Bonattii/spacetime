@@ -8,7 +8,11 @@ export const middleware = (request: NextRequest) => {
 
   // If the user is not logged in, will redirect to the login page
   if (!token) {
-    return NextResponse.redirect(signInURL);
+    return NextResponse.redirect(signInURL, {
+      headers: {
+        "Set-Cookie": `redirectTo=${request.url}; Path=/; HttpOnly; max-age=20;`,
+      },
+    });
   }
 
   // Just continue
