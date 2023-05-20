@@ -55,12 +55,13 @@ const Layout = () => {
         screenOptions={{
           headerShown: false,
           contentStyle: { backgroundColor: "transparent" },
+          animation: "fade",
         }}
       >
         {/* If the user is authenticated will redirect to next route */}
         <Stack.Screen name="index" redirect={isUserAuthenticated} />
-        <Stack.Screen name="new" />
         <Stack.Screen name="memories" />
+        <Stack.Screen name="new" />
       </Stack>
     </ImageBackground>
   );
