@@ -1,4 +1,4 @@
-# Expenses Tracker
+# SpaceTime
 
 <a href="https://www.linkedin.com/in/rodrigobonatti/">
   <img alt="Let's connect on LinkedIn" src="https://img.shields.io/badge/LinkedIn-0077B5?style=for-the-badge&logo=linkedin&logoColor=white" width="175"/>
